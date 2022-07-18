@@ -5,8 +5,19 @@ resource "aws_security_group" "sg1" {
   ingress = [
     {
       description      = "HTTP"
-      from_port        = 8080
-      to_port          = 8080
+      from_port        = var.server_port
+      to_port          = var.server_port
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = false
+    },
+    {
+      description      = "SSH Access"
+      from_port        = var.server_port_ssh
+      to_port          = var.server_port_ssh
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = []
@@ -14,6 +25,7 @@ resource "aws_security_group" "sg1" {
       security_groups  = []
       self             = false
     }
+
   ]
   egress = [
     {
@@ -47,11 +59,18 @@ resource "aws_instance" "web-server" {
   user_data = <<-EOF
                 #!/bin/bash
                 echo "Hello world" > index.html
-                nohup busybox httpd -f -p 8080 &
+                nohup busybox httpd -f -p ${var.server_port} &
                 EOF
   tags = {
     Name   = "web-server"
     source = "terraform-managed"
   }
   depends_on = [aws_security_group.sg1]
+}
+
+
+output "public_ip" {
+  value       = aws_instance.web-server.public_ip
+  description = "ec2 instance public ip"
+  sensitive   = false
 }
