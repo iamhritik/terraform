@@ -42,6 +42,38 @@ resource "aws_security_group" "sg1" {
   ]
 }
 
+resource "aws_security_group" "lb_sg" {
+  name        = "lb_sg"
+  description = "lb_sg security group"
+  ingress = [
+    {
+      description      = "HTTP"
+      from_port        = 80
+      to_port          = 80
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = false
+    }
+  ]
+  egress = [
+    {
+      description      = "Allow all Traffic"
+      from_port        = 0
+      to_port          = 0
+      protocol         = "-1"
+      cidr_blocks      = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = false
+    }
+  ]
+
+}
+
 
 resource "aws_instance" "web-server" {
   ami                    = "ami-006d3995d3a6b963b"
