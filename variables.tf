@@ -9,3 +9,8 @@ variable "server_port_ssh" {
   type        = number
   default     = 22
 }
+
+variable "rds_passwd" {
+  description = "rds database password"
+  type        = string
+}
