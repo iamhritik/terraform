@@ -1,12 +1,18 @@
+locals {
+  server_port = 8080
+  ssh_port = 22
+}
+
+
 resource "aws_security_group" "sg1" {
-  name        = "web-server-sg"
+  name        = var.security_group_name
   description = "web server security group"
   vpc_id      = "vpc-0d692a2f3409a9be1"
   ingress = [
     {
       description      = "HTTP"
-      from_port        = var.server_port
-      to_port          = var.server_port
+      from_port        = local.server_port
+      to_port          = local.server_port
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = []
@@ -16,8 +22,8 @@ resource "aws_security_group" "sg1" {
     },
     {
       description      = "SSH Access"
-      from_port        = var.server_port_ssh
-      to_port          = var.server_port_ssh
+      from_port        = local.ssh_port
+      to_port          = local.ssh_port
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = []
@@ -40,6 +46,10 @@ resource "aws_security_group" "sg1" {
       self             = false
     }
   ]
+  tags = {
+    Name = var.security_group_name
+    source = "terraform-managed"
+  }
 }
 
 
@@ -59,18 +69,19 @@ resource "aws_instance" "web-server" {
   user_data = <<-EOF
                 #!/bin/bash
                 echo "Hello world" > index.html
-                nohup busybox httpd -f -p ${var.server_port} &
+                nohup busybox httpd -f -p ${local.server_port} &
                 EOF
   tags = {
-    Name   = "web-server"
+    Name   = var.instance_name
     source = "terraform-managed"
   }
   depends_on = [aws_security_group.sg1]
 }
 
 
-output "public_ip" {
-  value       = aws_instance.web-server.public_ip
+output "instance_name" {
+  value       = aws_instance.web-server.id
   description = "ec2 instance public ip"
   sensitive   = false
 }
+
