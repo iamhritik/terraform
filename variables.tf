@@ -1,16 +1,19 @@
-variable "usernames" {
-    description = "IAM Users"
-    type = list(string)
-    default = ["hritik", "asmath"]
+variable "names" {
+  description = "list of names"
+  type = list(string)
+  default = ["hritik","pola","gola"]
 }
 
-variable "custom_tags" {
+variable "map_names" {
     type = map(string)
     default = {
-        Name = "hritik"
-        Name = "asmath"
-        Name = "demo"
-        Name = "test"
-        Name = "hola"
+        neo = "peo"
+        hola = "pola"
+        gola = "mola"
     }
+}
+
+variable "enable_new_user_data" {
+    description = "if true; then new user_data used"
+    type = bool
 }
