@@ -33,3 +33,8 @@ data "template_file" "user_data_new" {
 output "user_data_Value" {
  value = length(data.template_file.user_data[*]) > 0 ? data.template_file.user_data[0].rendered: data.template_file.user_data_new[0].rendered
 }
+
+
+output "if_else_string" {
+  value = "Hello, %{ if var.string_directive != ""}${var.string_directive}%{else}Universe%{endif}"
+}
