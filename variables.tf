@@ -17,3 +17,8 @@ variable "enable_new_user_data" {
     description = "if true; then new user_data used"
     type = bool
 }
+
+variable "string_directive" {
+    description = "Name to render"
+    type = string
+}
