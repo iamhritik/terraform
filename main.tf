@@ -1,40 +1,42 @@
-output "user_names" {
-  value = [for name in var.names: upper(name) if length(name) > 4]
-}
-
-output "map_user_names" {
-  value = {for key,value in var.map_names: upper(key) => upper(value)}
-}
-
-output "string_names" {
-  value = <<EOF
-  %{for name in var.names}
-    ${name}
-  %{endfor}
-  EOF
-}
-
-data "template_file" "user_data" {
-  count = var.enable_new_user_data ? 0 : 1
-  template = file("${path.module}/user-data.sh")
-  vars = {
-    server_port = 8080
+#create a security group
+resource "aws_security_group" "sg1"{
+  name = "provisioner-tes-sg"
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
-data "template_file" "user_data_new" {
-  count = var.enable_new_user_data ? 1 : 0
-  template = file("${path.module}/userdatanew.sh")
-  vars = {
-    server_port = 8080
-  } 
+#create a PEM formatted private key
+resource "tls_private_key" "rsa1"{
+  algorithm = "RSA"
+  rsa_bits = 4096
 }
 
-output "user_data_Value" {
- value = length(data.template_file.user_data[*]) > 0 ? data.template_file.user_data[0].rendered: data.template_file.user_data_new[0].rendered
+resource "aws_key_pair" "key1"{
+  key_name = "provisioner"
+  public_key = tls_private_key.rsa1.public_key_openssh
 }
 
+resource "aws_instance" "instance1"{
+  ami = "ami-006d3995d3a6b963b"
+  instance_type = "t2.micro"
+  vpc_security_group_ids  = [aws_security_group.sg1.id]
+  key_name = aws_key_pair.key1.key_name
 
-output "if_else_string" {
-  value = "Hello, %{ if var.string_directive != ""}${var.string_directive}%{else}Universe%{endif}"
+  connection {
+    type = "ssh"
+    host = self.public_ip
+    user = "ubuntu"
+    private_key = tls_private_key.rsa1.private_key_pem
+  }
+
+  provisioner "remote-exec"{
+    inline = [
+      "echo \"Hello, World from $(uname -smp)\"",
+      "touch test"
+    ]
+  }
 }
