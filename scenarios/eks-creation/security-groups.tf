@@ -4,9 +4,9 @@ resource "aws_security_group" "sg1" {
   vpc_id      = aws_vpc.vpc1.id
   ingress = [
     {
-      description      = "SSH Access"
-      from_port        = 22
-      to_port          = 22
+      description      = "API Access"
+      from_port        = 443
+      to_port          = 443
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = []

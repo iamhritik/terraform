@@ -8,3 +8,9 @@ variable "vpc_name" {
   type        = string
   default     = "demo"
 }
+
+variable "cluster_name" {
+  description = "EKS Cluster Name"
+  type        = string
+  default     = "eks-demo"
+}
