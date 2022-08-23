@@ -1,15 +1,15 @@
 resource "aws_eks_cluster" "eks-demo" {
-  name     = "${var.cluster_name}"
-  role_arn = aws_iam_role.eks_role.arn
-  enabled_cluster_log_types = ["api","audit"]
-  version = 1.22
+  name                      = var.cluster_name
+  role_arn                  = aws_iam_role.eks_role.arn
+  enabled_cluster_log_types = ["api", "audit"]
+  version                   = 1.22
   vpc_config {
-    subnet_ids = [aws_subnet.public_subnet1.id, aws_subnet.public_subnet2.id]
+    subnet_ids         = [aws_subnet.public_subnet1.id, aws_subnet.public_subnet2.id]
     security_group_ids = [aws_security_group.sg1.id]
 
   }
   tags = {
-    Name = "${var.cluster_name}-cluster"
+    Name       = "${var.cluster_name}-cluster"
     managed_by = "terraform"
   }
 
