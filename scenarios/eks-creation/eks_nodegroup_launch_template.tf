@@ -1,12 +1,12 @@
 resource "aws_launch_template" "eks-nodegroup-template" {
   name = "demo-launch-template"
-  image_id                             = "ami-006d3995d3a6b963b"
-  instance_type                        = "t2.micro"
+  image_id                             = "ami-05c200ff7ef5b2583"
+  instance_type                        = "t3.medium"
   key_name                             = "ttn"
   vpc_security_group_ids = ["${aws_security_group.sg2.id}"]
 
   block_device_mappings {
-    device_name = "/dev/sda1"
+    device_name = "/dev/xvda"
 
     ebs {
       volume_size = 10
@@ -31,5 +31,4 @@ resource "aws_launch_template" "eks-nodegroup-template" {
     }
   }
 
-  user_data = filebase64("${path.module}/userdata.sh")
 }
