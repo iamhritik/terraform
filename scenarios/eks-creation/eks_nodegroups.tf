@@ -17,7 +17,7 @@ resource "aws_eks_node_group" "eks_nodegroup1" {
   capacity_type = "SPOT"
   launch_template {
     name    = aws_launch_template.eks-nodegroup-template.name
-    version = "$Latest"
+    version = aws_launch_template.eks-nodegroup-template.latest_version
   }
 
   tags = {

@@ -22,12 +22,24 @@ resource "aws_launch_template" "eks-nodegroup-template" {
     instance_metadata_tags      = "enabled"
   }
 
+  user_data = base64encode(<<-EOF
+  MIME-Version: 1.0
+  Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+  --==MYBOUNDARY==
+  Content-Type: text/x-shellscript; charset="us-ascii"
+  #!/bin/bash
+  /etc/eks/bootstrap.sh ${var.cluster_name}
+  --==MYBOUNDARY==--\
+    EOF
+  )
+
   tag_specifications {
     resource_type = "instance"
 
     tags = {
-      Name  = "demo-launch-template-instances"
+      Name  = "${var.cluster_name}-Node_groups-Instances"
       owner = "terraform-managed"
+      demo-launch-template-instances = "yes"
     }
   }
 
