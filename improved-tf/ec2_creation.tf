@@ -14,11 +14,6 @@
 #   }
 # }
 
-output "public_ip" {
-  description = "Instance Public IP"
-  value       = ["${aws_instance.instance2.*.public_ip}"]
-}
-
 ##########
 resource "aws_instance" "instance2" {
   ami           = "ami-06489866022e12a14"
@@ -34,9 +29,15 @@ resource "aws_instance" "instance2" {
   }
 }
 
-resource "time_sleep" "wait_30_seconds" {
-  create_duration = "120s"
-  triggers = {
-    public_ip = aws_instance.instance2.public_ip
-  }
+output "ec2_all" {
+  description = "EC2 instance details"
+  value       = ["${aws_instance.instance2.*}"]
 }
+
+
+# resource "time_sleep" "wait_30_seconds" {
+#   create_duration = "120s"
+#   triggers = {
+#     public_ip = aws_instance.instance2.public_ip
+#   }
+# }
