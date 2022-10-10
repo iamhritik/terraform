@@ -7,3 +7,10 @@ variable "vpc_name" {
   type        = string
   default     = "demo-vpc"
 }
+
+
+variable "ec2_name" {
+  description = "EC2 Name"
+  type        = string
+  default     = "demo-vpc"
+}
