@@ -36,8 +36,7 @@ resource "aws_security_group" "sg1" {
 }
 
 
-resource "aws_instance" "instance1" {
-  depends_on = [aws_security_group.sg1]
+resource "aws_instance" "instance2" {
   count                  = length(var.naming)
   ami                    = "ami-006d3995d3a6b963b"
   instance_type          = "t2.micro"
