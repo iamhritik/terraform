@@ -52,6 +52,13 @@ variable "private_subnets_count" {
 
 
 #flow-logs related variables
+
+variable "enable_vpc_logging" {
+  type        = bool
+  default     = false
+  description = "Enable VPC flow logs"
+}
+
 variable "destination_type" {
   type        = string
   default     = "cloud-watch-logs"

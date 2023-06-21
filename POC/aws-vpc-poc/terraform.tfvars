@@ -8,7 +8,7 @@ map_public_ip_on_launch = true
 public_subnets_count    = 3
 private_subnets_count   = 1
 
-
+enable_vpc_logging = true
 destination_type = "s3"
 # log_format = 
 # iam_role_arn = 

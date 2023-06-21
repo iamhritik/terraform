@@ -1,4 +1,5 @@
 resource "aws_flow_log" "vpc_logging" {
+  count = local.enable_vpc_logging
   log_destination_type     = var.destination_type
   log_destination = try(aws_cloudwatch_log_group.vpc_log_group[0].arn,aws_s3_bucket.logging_bucket[0].arn)
   log_format               = var.log_format
