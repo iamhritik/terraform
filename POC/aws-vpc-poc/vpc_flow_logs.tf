@@ -80,16 +80,3 @@ resource "aws_iam_role_policy" "vpc_logging_policy" {
   role   = aws_iam_role.log_group_role[0].id
   policy = data.aws_iam_policy_document.policies[0].json
 }
-
-
-
-
-
-
-# resource "aws_flow_log" "example" {
-#   log_destination      = aws_s3_bucket.example.arn
-#   log_destination_type = "s3"
-#   traffic_type         = "ALL"
-#   vpc_id               = aws_vpc.example.id
-# }
-
