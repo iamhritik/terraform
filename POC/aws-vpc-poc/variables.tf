@@ -49,3 +49,65 @@ variable "private_subnets_count" {
   description = "private subnets count in this VPC"
   default     = null
 }
+
+
+#flow-logs related variables
+variable "destination_type" {
+  type        = string
+  default     = "cloud-watch-logs"
+  description = "VPC Flow logging - s3 or cloud-watch-logs"
+}
+
+variable "log_format" {
+  type        = string
+  default     = null
+  description = "VPC flow logs format"
+}
+
+variable "iam_role_arn" {
+  type        = string
+  default     = null
+  description = "IAM Role ARN for vpc-flow-logs"
+}
+
+variable "traffic_type" {
+  type        = string
+  default     = "ALL"
+  description = "VPC flow logs - traffic type:[ALL,ACCEPT,REJECT]"
+}
+
+variable "max_aggregation_interval" {
+  type        = number
+  default     = 600
+  description = "The maximum interval of time during which a flow of packets is captured and aggregated into a flow log record."
+}
+
+variable "cloudwatch_log_group_name" {
+  type        = string
+  default     = null
+  description = "cloudwatch log_group name"
+}
+
+variable "logging_bucket_name" {
+  type        = string
+  default     = null
+  description = "vpc logging s3 bucket name"
+}
+
+variable "flow_log_file_format" {
+  type        = string
+  default     = "plain-text"
+  description = "vpc flow_log_file_format"
+}
+
+variable "flow_log_hive_compatible_partitions" {
+  type        = bool
+  default     = false
+  description = "vpc flow_log_hive_compatible_partitions"
+}
+
+variable "flow_log_per_hour_partition" {
+  type        = bool
+  default     = false
+  description = "vpc flow_log_per_hour_partition"
+}

@@ -69,7 +69,7 @@ resource "aws_route_table" "public" {
 #used default route table as private route table
 resource "aws_default_route_table" "default_route" {
   default_route_table_id = aws_vpc.vpc_1.default_route_table_id
-  route = []
+  route                  = []
   tags = {
     Name = "${var.vpc_name}-private_route_table"
   }
