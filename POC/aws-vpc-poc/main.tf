@@ -26,7 +26,7 @@ resource "aws_subnet" "public_subnets" {
 resource "aws_subnet" "private_subnets" {
   count             = local.private_subnets
   vpc_id            = aws_vpc.vpc_1.id
-  cidr_block        = cidrsubnet(var.vpc_cidr, local.total_subnets, format("%d", count.index + local.public_subnets))
+  cidr_block        = cidrsubnet(var.vpc_cidr, local.total_subnets, format("%d", count.index + try(local.public_subnets,0)))
   availability_zone = element(var.availability_zones, count.index % length(var.availability_zones))
 
   tags = {
@@ -39,6 +39,7 @@ resource "aws_subnet" "private_subnets" {
 
 #Internet G/W
 resource "aws_internet_gateway" "igw" {
+  count                   = local.public_subnets != 0 ? 1: 0
   vpc_id = aws_vpc.vpc_1.id
 
   tags = {
@@ -52,10 +53,11 @@ resource "aws_internet_gateway" "igw" {
 
 #Route table
 resource "aws_route_table" "public" {
+ count                   = local.public_subnets != 0 ? 1: 0
   vpc_id = aws_vpc.vpc_1.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw.id
+    gateway_id = aws_internet_gateway.igw[count.index].id
   }
 
   tags = {
@@ -68,6 +70,7 @@ resource "aws_route_table" "public" {
 
 #used default route table as private route table
 resource "aws_default_route_table" "default_route" {
+  count                   = local.private_subnets != 0 ? 1: 0
   default_route_table_id = aws_vpc.vpc_1.default_route_table_id
   route                  = []
   tags = {
@@ -77,18 +80,18 @@ resource "aws_default_route_table" "default_route" {
 
 #Route table association
 resource "aws_route_table_association" "public" {
-  count          = local.public_subnets
-  subnet_id      = aws_subnet.public_subnets[count.index].id
-  route_table_id = aws_route_table.public.id
+  count                   = local.public_subnets != 0 ? 1: 0
+  subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
+  route_table_id = aws_route_table.public[count.index].id
   depends_on = [
     aws_route_table.public
   ]
 }
 
 resource "aws_route_table_association" "private" {
-  count          = local.private_subnets
-  subnet_id      = aws_subnet.private_subnets[count.index].id
-  route_table_id = aws_default_route_table.default_route.id
+  count                   = local.private_subnets != 0 ? 1: 0
+  subnet_id      = element(aws_subnet.private_subnets[*].id, count.index)
+  route_table_id = aws_default_route_table.default_route[count.index].id
   depends_on = [
     aws_default_route_table.default_route
   ]
