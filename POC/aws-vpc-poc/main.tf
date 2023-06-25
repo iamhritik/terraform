@@ -64,7 +64,8 @@ resource "aws_route_table" "public" {
     Name = "${var.vpc_name}-public_route_table"
   }
   depends_on = [
-    aws_internet_gateway.igw
+    aws_internet_gateway.igw,
+    aws_subnet.private_subnets
   ]
 }
 
@@ -80,18 +81,18 @@ resource "aws_default_route_table" "default_route" {
 
 #Route table association
 resource "aws_route_table_association" "public" {
-  count                   = local.public_subnets != 0 ? 1: 0
+  count                   = local.public_subnets != 0 ? local.public_subnets : 0
   subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
-  route_table_id = aws_route_table.public[count.index].id
+  route_table_id = element(aws_route_table.public[*].id, (local.public_subnets != null ? 0 : count.index))
   depends_on = [
     aws_route_table.public
   ]
 }
 
 resource "aws_route_table_association" "private" {
-  count                   = local.private_subnets != 0 ? 1: 0
+  count                   = local.private_subnets != 0 ? local.private_subnets: 0
   subnet_id      = element(aws_subnet.private_subnets[*].id, count.index)
-  route_table_id = aws_default_route_table.default_route[count.index].id
+  route_table_id = element(aws_default_route_table.default_route[*].id, (local.public_subnets != null ? 0 : count.index))
   depends_on = [
     aws_default_route_table.default_route
   ]

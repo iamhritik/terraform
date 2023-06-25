@@ -1,12 +1,12 @@
-# vpc_name                = "hitesh-vpc-custom"
-# vpc_cidr                = "192.168.0.0/16"
+# vpc_name                = "demo-custom"
+# vpc_cidr                = "10.0.0.0/16"
 # enable_dns_support      = true
 # enable_dns_hostnames    = true
 # availability_zones      = ["ap-south-1a","ap-south-1b","ap-south-1c"]
 # total_subnets_count     = 4
 # map_public_ip_on_launch = true
-# public_subnets_count    = 3
-# private_subnets_count   = 1
+# public_subnets_count    = 2
+# private_subnets_count   = 2
 # enable_vpc_logging = true
 # destination_type   = "s3"
 # log_format = 
