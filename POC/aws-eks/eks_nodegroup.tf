@@ -59,7 +59,7 @@ resource "aws_eks_node_group" "nodegroup_1" {
   tags = merge(
     try(var.tags, null),
     {
-      resource    = "${var.cluster_name}-nodegroup"
+      resource = "${var.cluster_name}-nodegroup"
     }
   )
   depends_on = [
