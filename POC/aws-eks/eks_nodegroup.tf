@@ -1,8 +1,9 @@
 resource "aws_eks_node_group" "nodegroup_1" {
   cluster_name    = aws_eks_cluster.cluster_1.name
   node_group_name = var.eks_nodegroup_name
-  version         = var.cluster_version
+  version         = var.nodegroup_version
   ami_type        = var.ami_type
+  release_version = var.release_version
   capacity_type   = var.capacity_type
   disk_size       = var.disk_size
   instance_types  = var.instance_types
@@ -59,7 +60,6 @@ resource "aws_eks_node_group" "nodegroup_1" {
     try(var.tags, null),
     {
       resource    = "${var.cluster_name}-nodegroup"
-      eks_version = "{var.cluster_version}"
     }
   )
   depends_on = [

@@ -9,7 +9,9 @@ ip_family         = "ipv4"
 
 #nodegroup variables
 eks_nodegroup_name = "demo-cluster-nodegroup-1"
-ami_type           = "AL2_ARM_64"
+#nodegroup_version = ""
+#ami_type           = "AL2_x86_64"
+#release_version = "1.24.13-20230607"
 capacity_type      = "SPOT"
 disk_size          = 60
 instance_types     = ["t3a.small"]

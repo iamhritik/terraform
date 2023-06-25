@@ -53,10 +53,22 @@ variable "eks_nodegroup_name" {
   description = "EKS nodegroup name"
 }
 
+variable "nodegroup_version" {
+  type        = string
+  default     = null
+  description = "EKS nodegroup version"
+}
+
 variable "ami_type" {
   type        = string
   default     = null
   description = "EKS nodegroup ami_type, Valid values are AL2_x86_64, AL2_x86_64_GPU, AL2_ARM_64, CUSTOM, BOTTLEROCKET_ARM_64, BOTTLEROCKET_x86_64"
+}
+
+variable "release_version" {
+  type        = string
+  default     = null
+  description = "EKS nodegroup AMI release_version"
 }
 
 variable "capacity_type" {
