@@ -1,5 +1,9 @@
 cluster_name    = "demo-cluster"
 cluster_version = "1.24"
+# eks_cluster_logging = {
+#   log_types = ["api", "audit"]
+#   retentionPeriod = "3"
+# }
 #private_access = false
 public_access      = true
 public_access_cidr = ["0.0.0.0/0"]

@@ -10,6 +10,12 @@ variable "cluster_version" {
   description = "EKS cluster version"
 }
 
+variable "eks_cluster_logging" {
+  type        = any
+  default     = null
+  description = "eks cluster logging types [api,audit,authenticator,controllerManager,scheduler] & retentionPeriod(default - 7d)"
+}
+
 variable "private_access" {
   type        = bool
   default     = false
