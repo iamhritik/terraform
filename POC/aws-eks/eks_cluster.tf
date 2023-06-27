@@ -2,7 +2,7 @@ resource "aws_eks_cluster" "cluster_1" {
   name                      = var.cluster_name
   version                   = var.cluster_version
   role_arn                  = aws_iam_role.cluster_role.arn
-  enabled_cluster_log_types = try(length(var.eks_cluster_logging), null) != null ? lookup(var.eks_cluster_logging, "log_types", ["api"]) : null
+  enabled_cluster_log_types = var.eks_cluster_logging != null ? lookup(var.eks_cluster_logging, "log_types", ["api"]) : null
 
   vpc_config {
     endpoint_private_access = var.private_access     #false
@@ -25,7 +25,7 @@ resource "aws_eks_cluster" "cluster_1" {
 
 
 resource "aws_cloudwatch_log_group" "example" {
-  count             = try(length(var.eks_cluster_logging), 0) > 0 ? 1 : 0
+  count             = var.eks_cluster_logging != null ? 1 : 0
   name              = "/aws/eks/${var.cluster_name}/cluster"
-  retention_in_days = try(length(var.eks_cluster_logging), null) != null ? lookup(var.eks_cluster_logging, "retentionPeriod", 7) : null
+  retention_in_days = var.eks_cluster_logging != null ? lookup(var.eks_cluster_logging, "retentionPeriod", 7) : null
 }

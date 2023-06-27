@@ -17,8 +17,8 @@ eks_nodegroup_name = "demo-cluster-nodegroup-1"
 #ami_type           = "AL2_x86_64"
 #release_version = "1.24.13-20230607"
 capacity_type  = "SPOT"
-disk_size      = 50
-instance_types = ["t3a.medium"]
+disk_size      = 30
+instance_types = ["t3a.small"]
 nodegroup_labels = {
   testing = "terraform"
 }
