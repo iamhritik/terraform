@@ -16,6 +16,18 @@ variable "eks_cluster_logging" {
   description = "eks cluster logging types [api,audit,authenticator,controllerManager,scheduler] & retentionPeriod(default - 7d)"
 }
 
+variable "eks_cluster_addons" {
+  description = "EKS cluster addon configurations to enable for the cluster."
+  type        = any
+  default     = {}
+}
+
+variable "eks_cluster_addons_timeouts" {
+  description = "Create, update, and delete timeout configurations for the cluster addons"
+  type        = map(string)
+  default     = {}
+}
+
 variable "private_access" {
   type        = bool
   default     = false

@@ -4,6 +4,19 @@ cluster_version = "1.24"
 #   log_types = ["api", "audit"]
 #   retentionPeriod = "3"
 # }
+eks_cluster_addons = {
+  kube-proxy = {
+    most_recent = true
+  }
+  vpc-cni = {
+    most_recent = true
+  }
+}
+# eks_cluster_addons_timeouts = {
+#   create = "30m"
+#   update = "30m"
+#   delete = "30m"
+# }
 #private_access = false
 public_access      = true
 public_access_cidr = ["0.0.0.0/0"]
