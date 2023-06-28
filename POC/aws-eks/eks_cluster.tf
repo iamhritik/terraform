@@ -8,7 +8,7 @@ resource "aws_eks_cluster" "cluster_1" {
     endpoint_private_access = var.private_access     #false
     endpoint_public_access  = var.public_access      #true.
     public_access_cidrs     = var.public_access_cidr #0.0.0.0/0.
-    security_group_ids      = var.security_group_ids
+    security_group_ids      = aws_security_group.cluster_sg.id
     subnet_ids              = module.vpc_creation.public_subnets_id
   }
   kubernetes_network_config {
