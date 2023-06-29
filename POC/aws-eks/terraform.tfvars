@@ -50,9 +50,9 @@ taints = {
     effect = "NO_SCHEDULE"
   }
 }
-nodegroup_desired_size = 2
+nodegroup_desired_size = 1
 nodegroup_max_size     = 2
-nodegroup_min_size     = 2
+nodegroup_min_size     = 1
 update_config = {
   max_unavailable_percentage = 20
 }
