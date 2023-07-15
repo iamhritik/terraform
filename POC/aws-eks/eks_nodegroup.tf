@@ -8,7 +8,7 @@ resource "aws_eks_node_group" "nodegroup_1" {
   disk_size       = var.disk_size
   instance_types  = var.instance_types
   node_role_arn   = aws_iam_role.nodegroup_role.arn
-  subnet_ids      = module.vpc_creation.public_subnets_id
+  subnet_ids      = var.subnets_id
   labels          = var.nodegroup_labels
 
   dynamic "launch_template" {

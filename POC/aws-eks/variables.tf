@@ -28,6 +28,17 @@ variable "eks_cluster_addons_timeouts" {
   default     = {}
 }
 
+variable "vpc_id" {
+  type        = string
+  default     = null
+  description = "VPC ID"
+}
+
+variable "subnets_id" {
+  type        = list(string)
+  default     = null
+  description = "Subnet ID to create EKS Cluster and Nodegroups"
+}
 variable "private_access" {
   type        = bool
   default     = false
@@ -168,5 +179,3 @@ variable "tags" {
   default     = {}
   description = "EKS nodegroup tags"
 }
-
-

@@ -8,8 +8,8 @@ resource "aws_eks_cluster" "cluster_1" {
     endpoint_private_access = var.private_access     #false
     endpoint_public_access  = var.public_access      #true.
     public_access_cidrs     = var.public_access_cidr #0.0.0.0/0.
-    security_group_ids      =  ["${aws_security_group.nodegroup_sg.id}"]
-    subnet_ids              = module.vpc_creation.public_subnets_id
+    security_group_ids      = ["${aws_security_group.nodegroup_sg.id}"]
+    subnet_ids              = var.subnets_id
   }
   kubernetes_network_config {
     service_ipv4_cidr = var.service_ipv4_cidr
@@ -17,7 +17,6 @@ resource "aws_eks_cluster" "cluster_1" {
   }
 
   depends_on = [
-    module.vpc_creation,
     aws_security_group.nodegroup_sg,
     aws_iam_role_policy_attachment.AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.AmazonEKSVPCResourceController,
