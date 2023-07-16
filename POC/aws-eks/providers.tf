@@ -12,7 +12,7 @@ provider "aws" {
     tags = {
       Environment    = "Production"
       Name           = "EKS-cluster-resources"
-      provisioned_by = "Terraform"
+      Provisioned_By = "Terraform"
     }
   }
 }
